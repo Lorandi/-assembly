@@ -1,17 +1,8 @@
 package com.lorandi.assembly.dto;
 
 import com.lorandi.assembly.enums.ElectorStatusEnum;
-import lombok.Builder;
-import lombok.Value;
-import lombok.With;
-import lombok.extern.jackson.Jacksonized;
+import jakarta.validation.constraints.NotNull;
 
-@Value
-@With
-@Jacksonized
-@Builder
-public class ElectorDTO {
-    Long id;
-    String cpf;
-    ElectorStatusEnum status;
-}
+public record ElectorDTO (Long id, @NotNull String cpf, @NotNull ElectorStatusEnum status) {}
+
+

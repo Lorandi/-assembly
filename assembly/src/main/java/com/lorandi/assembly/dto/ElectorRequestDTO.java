@@ -2,20 +2,16 @@ package com.lorandi.assembly.dto;
 
 
 import com.lorandi.assembly.enums.ElectorStatusEnum;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Value;
+import lombok.NoArgsConstructor;
 import lombok.With;
-import lombok.extern.jackson.Jacksonized;
-import org.jetbrains.annotations.NotNull;
 
 
-@Value
-@With
-@Jacksonized
 @Builder
-public class ElectorRequestDTO {
-
-    @NotNull
-    String cpf;
-    ElectorStatusEnum status;
+@With
+public record ElectorRequestDTO( @NotNull String cpf, ElectorStatusEnum status) {
+    @Builder public ElectorRequestDTO {};
 }
+
+

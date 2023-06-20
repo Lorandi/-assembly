@@ -36,20 +36,20 @@ public class ElectorService {
 
     public ElectorDTO create(final ElectorRequestDTO requestDTO) {
 
-        if (!CPFValidator.isValidCPF(requestDTO.getCpf())) {
-            log.error(messageHelper.get(ERROR_INVALID_CPF, requestDTO.getCpf()));
-            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, requestDTO.getCpf()));
+        if (!CPFValidator.isValidCPF(requestDTO.cpf())) {
+            log.error(messageHelper.get(ERROR_INVALID_CPF, requestDTO.cpf()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, requestDTO.cpf()));
         }
 
-        var cpf = requestDTO.getCpf().replaceAll("[^0-9]", "");
+        var cpf = requestDTO.cpf().replaceAll("[^0-9]", "");
 
         if (!repository.findAllByCpf(cpf).isEmpty()) {
             log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
         }
 
-        var status = isNull(requestDTO.getStatus()) ? ElectorStatusEnum.ABLE_TO_VOTE
-                : requestDTO.getStatus();
+        var status = isNull(requestDTO.status()) ? ElectorStatusEnum.ABLE_TO_VOTE
+                : requestDTO.status();
 
         return electorMapper.buildElectorDTO(repository.save(electorMapper.buildElector(requestDTO
                 .withCpf(cpf)
@@ -57,24 +57,24 @@ public class ElectorService {
     }
 
     public ElectorDTO update(final ElectorUpdateDTO updateDTO) {
-        if (!CPFValidator.isValidCPF(updateDTO.getCpf())) {
-            log.error(messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
-            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
+        if (!CPFValidator.isValidCPF(updateDTO.cpf())) {
+            log.error(messageHelper.get(ERROR_INVALID_CPF, updateDTO.cpf()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, updateDTO.cpf()));
         }
 
-        var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
+        var cpf = updateDTO.cpf().replaceAll("[^0-9]", "");
 
-        var elector = findById(updateDTO.getId());
+        var elector = findById(updateDTO.id());
 
-        if (!elector.getCpf().equals(updateDTO.getCpf())) {
+        if (!elector.getCpf().equals(updateDTO.cpf())) {
             if (!repository.findAllByCpf(cpf).isEmpty()) {
                 log.error(messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
                 throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_CPF_ALREADY_USED, cpf));
             }
         }
 
-        var electorStatus = isNull(updateDTO.getStatus()) ? ElectorStatusEnum.ABLE_TO_VOTE
-                : updateDTO.getStatus();
+        var electorStatus = isNull(updateDTO.status()) ? ElectorStatusEnum.ABLE_TO_VOTE
+                : updateDTO.status();
 
         return electorMapper.buildElectorDTO(repository.save(elector.withCpf(cpf).withStatus(electorStatus)));
     }
