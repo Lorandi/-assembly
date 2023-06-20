@@ -8,6 +8,7 @@ import com.lorandi.assembly.enums.ElectorStatusEnum;
 import com.lorandi.assembly.helper.MessageHelper;
 import com.lorandi.assembly.repository.ElectorRepository;
 import com.lorandi.assembly.repository.spec.ElectorSpecification;
+import com.lorandi.assembly.util.validator.CPFValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,8 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 
-import static com.lorandi.assembly.exception.ErrorCodeEnum.ERROR_CPF_ALREADY_USED;
-import static com.lorandi.assembly.exception.ErrorCodeEnum.ERROR_ELECTOR_NOT_FOUND;
+import static com.lorandi.assembly.exception.ErrorCodeEnum.*;
 import static com.lorandi.assembly.util.mapper.MapperConstants.electorMapper;
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -35,6 +35,11 @@ public class ElectorService {
     private final MessageHelper messageHelper;
 
     public ElectorDTO create(final ElectorRequestDTO requestDTO) {
+
+        if (!CPFValidator.isValidCPF(requestDTO.getCpf())) {
+            log.error(messageHelper.get(ERROR_INVALID_CPF, requestDTO.getCpf()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, requestDTO.getCpf()));
+        }
 
         var cpf = requestDTO.getCpf().replaceAll("[^0-9]", "");
 
@@ -52,6 +57,10 @@ public class ElectorService {
     }
 
     public ElectorDTO update(final ElectorUpdateDTO updateDTO) {
+        if (!CPFValidator.isValidCPF(updateDTO.getCpf())) {
+            log.error(messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
+            throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_INVALID_CPF, updateDTO.getCpf()));
+        }
 
         var cpf = updateDTO.getCpf().replaceAll("[^0-9]", "");
 
