@@ -4,6 +4,7 @@ package com.lorandi.assembly.resource;
 import com.lorandi.assembly.dto.ElectorDTO;
 import com.lorandi.assembly.dto.ElectorRequestDTO;
 import com.lorandi.assembly.dto.ElectorUpdateDTO;
+import com.lorandi.assembly.service.ElectorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
