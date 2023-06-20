@@ -1,19 +1,9 @@
 package com.lorandi.assembly.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Value;
 import lombok.With;
-import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotNull;
-
-@Value
-@With
-@Jacksonized
 @Builder
-public class SurveyRequestDTO {
-
-    Long minutes;
-    @NotNull
-    String question;
-}
+@With
+public record SurveyRequestDTO( Long minutes, @NotNull String question) {}

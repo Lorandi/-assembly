@@ -32,7 +32,7 @@ public class SurveyService {
 
     public SurveyDTO create(final SurveyRequestDTO requestDTO) {
 
-        Long minutes = isNull(requestDTO.getMinutes()) ? DEFAULT_MINUTES : requestDTO.getMinutes();
+        Long minutes = isNull(requestDTO.minutes()) ? DEFAULT_MINUTES : requestDTO.minutes();
 
         SurveyDTO survey = surveyMapper.buildSurveyDTO(repository.save(surveyMapper.buildSurvey(requestDTO)
                 .withEndTime(LocalDateTime.now().plusMinutes(minutes))));
@@ -40,12 +40,12 @@ public class SurveyService {
     }
 
     public SurveyDTO update(final SurveyUpdateDTO updateDTO) {
-        var minutes = isNull(updateDTO.getMinutes()) ? DEFAULT_MINUTES : updateDTO.getMinutes();
+        var minutes = isNull(updateDTO.minutes()) ? DEFAULT_MINUTES : updateDTO.minutes();
 
-        Survey survey = findById(updateDTO.getId());
+        Survey survey = findById(updateDTO.id());
 
         SurveyDTO updateSurvey = surveyMapper.buildSurveyDTO(repository.save(survey
-                .withQuestion(updateDTO.getQuestion())
+                .withQuestion(updateDTO.question())
                 .withEndTime(LocalDateTime.now().plusMinutes(minutes))));
 
         return updateSurvey;
