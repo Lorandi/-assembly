@@ -1,9 +1,12 @@
 package com.lorandi.assembly.entity;
 
+import com.lorandi.assembly.enums.SurveyStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+import static jakarta.persistence.EnumType.STRING;
 
 @Entity
 @Data
@@ -18,4 +21,6 @@ public class Survey {
     private Long id;
     private LocalDateTime endTime;
     private String question;
+    @Enumerated(STRING)
+    private SurveyStatusEnum status;
 }

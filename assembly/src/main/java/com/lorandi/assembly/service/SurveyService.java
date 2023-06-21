@@ -5,16 +5,19 @@ import com.lorandi.assembly.dto.SurveyDTO;
 import com.lorandi.assembly.dto.SurveyRequestDTO;
 import com.lorandi.assembly.dto.SurveyUpdateDTO;
 import com.lorandi.assembly.entity.Survey;
+import com.lorandi.assembly.enums.SurveyStatusEnum;
 import com.lorandi.assembly.helper.MessageHelper;
 import com.lorandi.assembly.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.lorandi.assembly.exception.ErrorCodeEnum.ERROR_SURVEY_NOT_FOUND;
 import static com.lorandi.assembly.util.mapper.MapperConstants.surveyMapper;
@@ -34,9 +37,9 @@ public class SurveyService {
 
         Long minutes = isNull(requestDTO.minutes()) ? DEFAULT_MINUTES : requestDTO.minutes();
 
-        SurveyDTO survey = surveyMapper.buildSurveyDTO(repository.save(surveyMapper.buildSurvey(requestDTO)
-                .withEndTime(LocalDateTime.now().plusMinutes(minutes))));
-        return survey;
+        return surveyMapper.buildSurveyDTO(repository.save(surveyMapper.buildSurvey(requestDTO)
+                .withEndTime(LocalDateTime.now().plusMinutes(minutes))
+                .withStatus(SurveyStatusEnum.OPEN)));
     }
 
     public SurveyDTO update(final SurveyUpdateDTO updateDTO) {
@@ -44,11 +47,10 @@ public class SurveyService {
 
         Survey survey = findById(updateDTO.id());
 
-        SurveyDTO updateSurvey = surveyMapper.buildSurveyDTO(repository.save(survey
+        return surveyMapper.buildSurveyDTO(repository.save(survey
                 .withQuestion(updateDTO.question())
-                .withEndTime(LocalDateTime.now().plusMinutes(minutes))));
-
-        return updateSurvey;
+                .withEndTime(LocalDateTime.now().plusMinutes(minutes)))
+                .withStatus(updateDTO.status()));
     }
 
     public Survey findById(final Long id) {
@@ -72,4 +74,11 @@ public class SurveyService {
         return repository.findAll(pageable).map(surveyMapper::buildSurveyDTO);
     }
 
+    public List<Survey> findAllSurveysToUpdateSurveyStatusToClosed() {
+        return repository.findAllSurveysToUpdateSurveyStatusToClosed();
+    }
+
+    public Survey save(Survey survey){
+        return repository.save(survey);
+    };
 }

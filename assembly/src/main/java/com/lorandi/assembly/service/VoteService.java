@@ -9,12 +9,14 @@ import com.lorandi.assembly.entity.Elector;
 import com.lorandi.assembly.entity.Survey;
 import com.lorandi.assembly.entity.Vote;
 import com.lorandi.assembly.enums.ElectorStatusEnum;
+import com.lorandi.assembly.enums.SurveyStatusEnum;
 import com.lorandi.assembly.helper.MessageHelper;
 import com.lorandi.assembly.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -90,7 +92,7 @@ public class VoteService {
                     electorId, surveyId));
         }
 
-        if (survey.getEndTime().isBefore(LocalDateTime.now())) {
+        if (survey.getEndTime().isBefore(LocalDateTime.now()) ||survey.getStatus().equals(SurveyStatusEnum.CLOSED)) {
             log.error(messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED, survey.getId().toString()));
             throw new ResponseStatusException(BAD_REQUEST, messageHelper.get(ERROR_THIS_SURVEY_IS_EXPIRED,
                     survey.getId().toString()));
