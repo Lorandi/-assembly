@@ -1,0 +1,5 @@
+package com.lorandi.assembly.dto;
+
+import jakarta.validation.constraints.NotNull;
+
+public record VoteRequestDTO(@NotNull Long surveyId, @NotNull Long electorId, @NotNull Boolean approval) {}
