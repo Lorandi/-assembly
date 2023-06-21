@@ -73,6 +73,6 @@ public class VoteResource {
             responses = {@ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
                     content = @Content(schema = @Schema(implementation = ResultDTO.class)))})
     public ResultDTO result(@PathVariable Long surveyId) {
-        return service.result(surveyId);
+        return service.surveyResult(surveyId);
     }
 }

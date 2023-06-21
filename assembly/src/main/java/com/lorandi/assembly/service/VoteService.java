@@ -1,14 +1,12 @@
 package com.lorandi.assembly.service;
 
 
-import com.lorandi.assembly.dto.ResultDTO;
-import com.lorandi.assembly.dto.VoteDTO;
-import com.lorandi.assembly.dto.VoteRequestDTO;
-import com.lorandi.assembly.dto.VoteUpdateDTO;
+import com.lorandi.assembly.dto.*;
 import com.lorandi.assembly.entity.Elector;
 import com.lorandi.assembly.entity.Survey;
 import com.lorandi.assembly.entity.Vote;
 import com.lorandi.assembly.enums.ElectorStatusEnum;
+import com.lorandi.assembly.enums.ResultStatusEnum;
 import com.lorandi.assembly.enums.SurveyStatusEnum;
 import com.lorandi.assembly.helper.MessageHelper;
 import com.lorandi.assembly.repository.VoteRepository;
@@ -16,11 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.lorandi.assembly.exception.ErrorCodeEnum.*;
 import static com.lorandi.assembly.util.mapper.MapperConstants.voteMapper;
@@ -99,13 +98,12 @@ public class VoteService {
         }
     }
 
-    public ResultDTO result(Long surveyId) {
-        var survey = surveyService.findDTOById(surveyId);
-        var approves = repository.countBySurveyIdAndApproval(surveyId, true);
-        var reproves = repository.countBySurveyIdAndApproval(surveyId, false);
+    public ResultDTO surveyResult(Long surveyId) {
+        SurveyDTO survey = surveyService.findDTOById(surveyId);
+        Long approves = repository.countBySurveyIdAndApproval(surveyId, true);
+        Long reproves = repository.countBySurveyIdAndApproval(surveyId, false);
 
         String result;
-
         if (approves > reproves) {
             result = "Aprovado";
         } else if ((approves < reproves)) {
@@ -113,6 +111,19 @@ public class VoteService {
         } else {
             result = "Empate";
         }
-        return ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).result(result).build();
+
+        ResultStatusEnum status = survey.status().equals(SurveyStatusEnum.OPEN) ?
+                ResultStatusEnum.IN_PROGRESS : ResultStatusEnum.FINISHED;
+        return ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).totalVotes(approves+reproves)
+                .result(result).status(status).build();
+    }
+
+    public List<ResultDTO> assemblyResult() {
+        List<Survey> listSurvey = surveyService.findAll();
+        List<ResultDTO> listResult = new ArrayList<>();
+        for (Survey survey : listSurvey) {
+            listResult.add(surveyResult(survey.getId()));
+        }
+        return listResult;
     }
 }

@@ -74,6 +74,10 @@ public class SurveyService {
         return repository.findAll(pageable).map(surveyMapper::buildSurveyDTO);
     }
 
+    public List<Survey> findAll() {
+        return repository.findAll();
+    }
+
     public List<Survey> findAllSurveysToUpdateSurveyStatusToClosed() {
         return repository.findAllSurveysToUpdateSurveyStatusToClosed();
     }

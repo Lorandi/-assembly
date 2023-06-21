@@ -23,7 +23,9 @@
 		<lombok-mapstruct-binding.version>0.1.0</lombok-mapstruct-binding.version>
 		<sonar-maven-plugin.version>3.2</sonar-maven-plugin.version>
 		<spring-cloud-starter-openfeign.version>4.0.0</spring-cloud-starter-openfeign.version>
+		<podam.version>7.2.6.RELEASE</podam.version>
 		<resource.delimiter>^</resource.delimiter>
+		<javafaker.version>1.0.2</javafaker.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -92,6 +94,21 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>uk.co.jemos.podam</groupId>
+			<artifactId>podam</artifactId>
+			<version>${podam.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>${javafaker.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
