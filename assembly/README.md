@@ -33,8 +33,10 @@ No cooperativismo, cada associado possui um voto e as decisões são tomadas em 
 ## Documentação
 http://localhost:8080/swagger-ui/index.html
 
-## Banco de dados H2
-http://localhost:8080/h2
-- User Name: sa
-- Password: vazio
-- Para popular o banco, use o arquivo [inserts.txt](assembly/src/main/resources/inserts.txt)
+## Banco de dados POSTGRESQL
+- Host: localhost
+- Database: assembly
+- Port: 5441
+- Username: postgres
+- Password: 123
+- Para popular o banco, use o arquivo inserts.txt = assembly/src/main/resources/inserts.txt
