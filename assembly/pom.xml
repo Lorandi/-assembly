@@ -27,7 +27,9 @@
 		<resource.delimiter>^</resource.delimiter>
 		<javafaker.version>1.0.2</javafaker.version>
 		<rabbitmq.version>5.16.0</rabbitmq.version>
+		<json.version>20230618</json.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -113,6 +115,12 @@
 			<artifactId>javafaker</artifactId>
 			<version>${javafaker.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
 		</dependency>
 
 	</dependencies>
