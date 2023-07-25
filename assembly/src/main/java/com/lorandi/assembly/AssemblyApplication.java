@@ -12,5 +12,4 @@ public class AssemblyApplication {
 		SpringApplication.run(AssemblyApplication.class, args);
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 	}
-
 }

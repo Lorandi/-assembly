@@ -15,8 +15,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
 
 import static com.lorandi.assembly.util.creator.ElectorCreator.*;
 import static java.util.Optional.empty;
@@ -105,8 +107,8 @@ public class ElectorServiceTest {
     void findAll_returnsPageOfDTOs_whenSuccessful() {
         final var pageable = PageRequest.of(0, 10, Sort.by(ASC, "id"));
         final var assertion = new PageImpl<>(List.of(electorDTO));
-        final var electores = new PageImpl<>(List.of(elector));
-        when(repository.findAll(any(ElectorSpecification.class), any(Pageable.class))).thenReturn(electores);
+        final var electors = new PageImpl<>(List.of(elector));
+        when(repository.findAll(any(ElectorSpecification.class), any(Pageable.class))).thenReturn(electors);
         assertEquals(assertion, service.findAll(empty(),pageable));
     }
 

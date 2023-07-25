@@ -26,6 +26,7 @@
 		<podam.version>7.2.6.RELEASE</podam.version>
 		<resource.delimiter>^</resource.delimiter>
 		<javafaker.version>1.0.2</javafaker.version>
+		<rabbitmq.version>5.16.0</rabbitmq.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -92,7 +93,7 @@
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
-			<version>5.16.0</version>
+			<version>${rabbitmq.version}</version>
 		</dependency>
 
 		<dependency>
