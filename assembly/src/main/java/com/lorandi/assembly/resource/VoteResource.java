@@ -18,6 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
