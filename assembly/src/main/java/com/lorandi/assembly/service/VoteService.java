@@ -126,7 +126,7 @@ public class VoteService {
         ResultDTO resultDTO = ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).totalVotes(approves + reproves)
                 .result(result).status(status).build();
 
-        messengerService.propagateResult(resultDTO);
+        messengerService.directPublisher(resultDTO);
 
         return resultDTO;
     }

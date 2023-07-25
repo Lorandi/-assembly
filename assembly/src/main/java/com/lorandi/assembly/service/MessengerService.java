@@ -60,6 +60,28 @@ public class MessengerService {
             } catch (IOException | TimeoutException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        public void directPublisher(ResultDTO resultDTO){
+            try {
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection connection = null;
+
+                connection = factory.newConnection();
+                Channel channel = connection.createChannel();
+
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("surveyId", resultDTO.survey().id());
+                resultJson.put("question", resultDTO.survey().question());
+                resultJson.put("result", resultDTO.result());
+
+                channel.basicPublish("Direct-Exchange",  resultDTO.result(), null, resultJson.toString().getBytes());
+
+                channel.close();
+                connection.close();
+            } catch (IOException | TimeoutException e) {
+                throw new RuntimeException(e);
+            }
 
         }
 
