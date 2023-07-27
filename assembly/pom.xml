@@ -28,6 +28,7 @@
 		<javafaker.version>1.0.2</javafaker.version>
 		<rabbitmq.version>5.16.0</rabbitmq.version>
 		<json.version>20230618</json.version>
+		<spring.rabbit.version>3.0.7</spring.rabbit.version>
 	</properties>
 
 	<dependencies>
@@ -121,6 +122,12 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>${json.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+<!--			<version>${spring.rabbit.version}</version>-->
 		</dependency>
 
 	</dependencies>

@@ -2,6 +2,7 @@ package com.lorandi.assembly.service;
 
 import com.lorandi.assembly.entity.Survey;
 import com.lorandi.assembly.enums.SurveyStatusEnum;
+import com.lorandi.assembly.event.producer.MessengerPublisherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,11 +17,14 @@ import java.util.List;
 @EnableScheduling
 public class ScheduledTaskService {
     private final SurveyService surveyService;
+    private final MessengerPublisherService messengerService;
+    private final VoteService voteService;
     @Scheduled(cron = "1 * * * * *", zone = "America/Sao_Paulo")
     public void updateSurveyStatus() {
         List<Survey> listSurveys = surveyService.findAllSurveysToUpdateSurveyStatusToClosed();
         for (Survey survey : listSurveys) {
             surveyService.save(survey.withStatus(SurveyStatusEnum.CLOSED));
+            messengerService.directPublisher(voteService.surveyResult(survey.getId()));
         }
     }
 }

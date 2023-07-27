@@ -8,24 +8,19 @@ import com.lorandi.assembly.entity.Vote;
 import com.lorandi.assembly.enums.ElectorStatusEnum;
 import com.lorandi.assembly.enums.ResultStatusEnum;
 import com.lorandi.assembly.enums.SurveyStatusEnum;
+import com.lorandi.assembly.event.producer.MessengerPublisherService;
 import com.lorandi.assembly.helper.MessageHelper;
 import com.lorandi.assembly.repository.VoteRepository;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import static com.lorandi.assembly.exception.ErrorCodeEnum.*;
 import static com.lorandi.assembly.util.mapper.MapperConstants.voteMapper;
@@ -43,7 +38,7 @@ public class VoteService {
     private final ElectorService electorService;
     private final SurveyService surveyService;
 
-    private final MessengerService messengerService;
+    private final MessengerPublisherService messengerService;
 
 
     public VoteDTO create(final VoteRequestDTO requestDTO) {
@@ -123,12 +118,8 @@ public class VoteService {
         ResultStatusEnum status = survey.status().equals(SurveyStatusEnum.OPEN) ?
                 ResultStatusEnum.IN_PROGRESS : ResultStatusEnum.FINISHED;
 
-        ResultDTO resultDTO = ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).totalVotes(approves + reproves)
+        return ResultDTO.builder().survey(survey).approves(approves).reproves(reproves).totalVotes(approves + reproves)
                 .result(result).status(status).build();
-
-        messengerService.directPublisher(resultDTO);
-
-        return resultDTO;
     }
 
     public List<ResultDTO> assemblyResult() {
