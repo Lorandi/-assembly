@@ -53,17 +53,17 @@ public class MessengerConsumerService {
 
     }
 
-    @RabbitListener(queues = "Aprovado")
-    public void receiveMessageAprovado(String message) {
-        System.out.println("Received Message: " + message);
-    }
-    @RabbitListener(queues = "Reprovado")
-    public void receiveMessageReprovado(String message) {
-        System.out.println("Received Message: " + message);
-    }
-    @RabbitListener(queues = "Empate")
-    public void receiveMessageEmpate(String message) {
-        System.out.println("Received Message: " + message);
-    }
+//    @RabbitListener(queues = "Aprovado")
+//    public void receiveMessageAprovado(String message) {
+//        System.out.println("Received Message: " + message);
+//    }
+//    @RabbitListener(queues = "Reprovado")
+//    public void receiveMessageReprovado(String message) {
+//        System.out.println("Received Message: " + message);
+//    }
+//    @RabbitListener(queues = "Empate")
+//    public void receiveMessageEmpate(String message) {
+//        System.out.println("Received Message: " + message);
+//    }
 
 }

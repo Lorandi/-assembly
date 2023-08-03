@@ -40,3 +40,23 @@ http://localhost:8080/swagger-ui/index.html
 - Username: postgres
 - Password: 123
 - Para popular o banco, use o arquivo inserts.txt = assembly/src/main/resources/inserts.txt
+
+## Mensageria RabbitMQ
+- Host: localhost
+- Port: 5672
+- Username: guest
+- Password: guest
+- Para acessar o RabbitMQ, use o link: http://localhost:15672/#/
+
+## Tecnologias utilizadas
+- Java 17
+- Spring Boot
+- Swagger
+- Lombok
+- JUnit
+- Mockito
+- PostgreSQL
+- RabbitMQ
+- Docker
+- Maven
+- MapStruct
